@@ -102,7 +102,7 @@ module RuboCop
         private
 
         def register_offense(node, change_node)
-          if !node.parent.respond_to?(:method_name)
+          unless node.parent.send_type?
             add_offense(node.source_range, message: "Unexpected syntax. Please review the structure and adjust accordingly.")
             return
           end
