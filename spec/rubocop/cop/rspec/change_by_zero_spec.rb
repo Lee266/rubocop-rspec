@@ -365,5 +365,12 @@ RSpec.describe RuboCop::Cop::RSpec::ChangeByZero do
         expect { foo }.to change { Foo.bar }.by(1)
       end
     RUBY
+
+    expect_no_offenses(<<~RUBY)
+      it do
+        subject; change(Foo, :bar).by(0)
+        change(foo, :bar).by(0)
+      end
+    RUBY
   end
 end
