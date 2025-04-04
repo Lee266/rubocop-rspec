@@ -102,8 +102,7 @@ module RuboCop
         private
 
         def register_offense(node, change_node)
-          unless node.parent.send_type?
-            add_offense(node.source_range, message: "Unexpected syntax. Please review the structure and adjust accordingly.")
+          if !node.parent.respond_to?(:send_type?) || !node.parent.send_type?
             return
           end
 
@@ -121,8 +120,7 @@ module RuboCop
         end
 
         def compound_expectations?(node)
-          node.parent.send_type? &&
-            %i[and or & |].include?(node.parent.method_name)
+          %i[and or & |].include?(node.parent.method_name)
         end
 
         def message(change_node)
